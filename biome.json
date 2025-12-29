@@ -1,0 +1,103 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+	"vcs": { "enabled": false, "clientKind": "git", "useIgnoreFile": false },
+	"files": { "ignoreUnknown": false, "ignore": [], "maxSize": 4194304 },
+	"formatter": {
+		"enabled": true,
+		"useEditorconfig": true,
+		"formatWithErrors": false,
+		"indentStyle": "space",
+		"indentWidth": 4,
+		"lineEnding": "lf",
+		"lineWidth": 120,
+		"attributePosition": "auto",
+		"bracketSpacing": true
+	},
+	"organizeImports": { "enabled": true },
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": false,
+			"complexity": {
+				"noBannedTypes": "error",
+				"noExcessiveCognitiveComplexity": "warn",
+				"noUselessThisAlias": "error",
+				"noUselessTypeConstraint": "error",
+				"useLiteralKeys": "error",
+				"useOptionalChain": "error"
+			},
+			"correctness": {
+				"noPrecisionLoss": "error",
+				"noUnusedVariables": "off",
+				"useArrayLiterals": "off"
+			},
+			"style": {
+				"noInferrableTypes": "error",
+				"noNamespace": "error",
+				"useAsConstAssertion": "error",
+				"useConsistentArrayType": "error",
+				"useConst": "warn",
+				"useFilenamingConvention": {
+					"level": "error",
+					"options": {
+						"requireAscii": true,
+						"filenameCases": ["camelCase", "PascalCase"]
+					}
+				},
+				"useForOf": "error",
+				"useNodejsImportProtocol": "error",
+				"useShorthandFunctionType": "error",
+				"useThrowNewError": "error",
+				"useWhile": "error"
+			},
+			"suspicious": {
+				"noEmptyBlockStatements": "error",
+				"noEmptyInterface": "error",
+				"noExplicitAny": "warn",
+				"noExtraNonNullAssertion": "error",
+				"noMisleadingInstantiator": "error",
+				"noUnsafeDeclarationMerging": "error",
+				"useAwait": "error",
+				"useNamespaceKeyword": "error"
+			}
+		},
+		"ignore": ["**/dist"]
+	},
+	"javascript": { "formatter": { "quoteStyle": "double" },  "parser": {
+		"unsafeParameterDecoratorsEnabled": true
+	  } },
+	"overrides": [
+		{
+			"include": ["*.ts", "*.tsx", "*.mts", "*.cts"],
+			"linter": {
+				"rules": {
+					"correctness": {
+						"noConstAssign": "off",
+						"noGlobalObjectCalls": "off",
+						"noInvalidConstructorSuper": "off",
+						"noNewSymbol": "off",
+						"noSetterReturn": "off",
+						"noUndeclaredVariables": "off",
+						"noUnreachable": "off",
+						"noUnreachableSuper": "off"
+					},
+					"style": {
+						"noArguments": "error",
+						"noVar": "error",
+						"useConst": "error"
+					},
+					"suspicious": {
+						"noDuplicateClassMembers": "off",
+						"noDuplicateObjectKeys": "off",
+						"noDuplicateParameters": "off",
+						"noFunctionAssign": "off",
+						"noImportAssign": "off",
+						"noRedeclare": "off",
+						"noUnsafeNegation": "off",
+						"useGetterReturn": "off"
+					}
+				}
+			}
+		}
+	]
+}
