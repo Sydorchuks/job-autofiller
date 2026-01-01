@@ -16,6 +16,8 @@ import { autofillAvailability } from "../form/availabilityAutofill";
 
 import { profile } from "../config/profile";
 import { salaryAutofill } from "../form/salaryAutofill";
+import { autofillLocation } from "../form/locationAutofill";
+import { autofillLanguages } from "../form/languageAutofill";
 
 export async function runEngine(): Promise<void> {
     const rl = createInterface({ input, output });
@@ -31,32 +33,15 @@ export async function runEngine(): Promise<void> {
     console.log("\n👉 Log in manually if needed.");
     await rl.question("Press ENTER when application form is visible...");
 
-    /**
-     * 1️⃣ RAW fields (старий світ)
-     */
     const { elements: rawElements } = await detectAndDumpForm(page);
 
-    /**
-     * 2️⃣ SEMANTIC fields (новий світ)
-     */
     const semanticFields = await detectSemanticForm(page);
-
-    /**
-     * 3️⃣ STANDARD AUTOFILL (RAW)
-     */
     await autofillStandardFields(page, rawElements, profile);
-
-    /**
-     * 4️⃣ PROFILE LINKS (RAW)
-     */
     await profileLinksAutofill(page, rawElements, profile.profiles);
-
-    /**
-     * 5️⃣ AVAILABILITY (SEMANTIC)
-     */
     await autofillAvailability(page, semanticFields);
-
-    await salaryAutofill(page, rawElements, profile.salary)
+    await autofillLocation(page, semanticFields, profile.location);
+    await salaryAutofill(page, rawElements, profile.salary);
+    await autofillLanguages(page, semanticFields, profile.languages)
 
     console.log("\n🟡 Review the form manually before submit.");
 }

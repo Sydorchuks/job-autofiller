@@ -47,6 +47,19 @@ const ROLE_KEYWORDS: Record<string, SemanticRole> = {
     // resume
     cv: "resume",
     resume: "resume",
+
+    // ===== LOCATION =====
+    country: "locationCountry",
+    kraj: "locationCountry",
+    państwo: "locationCountry",
+    location_country: "locationCountry",
+
+    city: "locationCity",
+    miasto: "locationCity",
+    miejscowość: "locationCity",
+
+    location: "locationGeneric",
+    lokalizacja: "locationGeneric",
 };
 
 

@@ -5,10 +5,15 @@ export type SemanticRole =
     | "phone"
     | "salary"
     | "availability"
+    | "noticePeriod"
+    | "locationCountry"
+    | "locationCity"
+    | "locationGeneric"
     | "profileGit"
     | "profileLinkedIn"
     | "resume"
-    | "unknown";
+    | "unknown"
+    | "language";
 
 export type ControlType =
     | "input"
