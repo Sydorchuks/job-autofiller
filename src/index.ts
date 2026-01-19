@@ -1,11 +1,13 @@
-import { runEngine } from "./engine/runEngine";
+import { runEngine } from "./engine/runner/runEngine";
+import { createSession } from "./engine/session";
 
-async function main(): Promise<void> {
-    console.log("=== Job Automation Engine (READ-ONLY) ===");
-    await runEngine();
-}
+const session = createSession({
+  mode: "interactive", // або "auto"
+  urls: [
+    "https://santanderbp.wd502.myworkdayjobs.com/pl-PL/Kariera/job/Pozna%C5%84/specjalista--ka--relacji-z-klientem-Strefy-Santander_Req1509539-1/apply/applyManually?source=PL_Pracuj",
+  ],
+});
 
-main().catch((error) => {
-    console.error("Fatal error:", error);
-    process.exit(1);
+runEngine(session).catch((err) => {
+  console.error("❌ Engine crashed:", err);
 });
