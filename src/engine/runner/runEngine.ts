@@ -1,7 +1,7 @@
 import type { EngineSession } from "../session/EngineSession";
+import { openBrowser } from "../../browser/openBrowser";
 import { runApplication } from "./runApplication";
-import { createInterface } from "node:readline/promises";
-import { stdin as input, stdout as output } from "node:process";
+import { initGlobalInput } from "../input/globalInput";
 
 export async function runEngine(
   session: EngineSession
@@ -10,22 +10,17 @@ export async function runEngine(
   console.log(`Mode: ${session.mode}`);
   console.log(`Total URLs: ${session.urls.length}`);
 
-  while (session.currentIndex < session.urls.length) {
-    const url = session.urls[session.currentIndex];
+  initGlobalInput();
 
-    console.log(
-      `\n▶️ [${session.currentIndex + 1}/${session.urls.length}]`
-    );
+  const { browser, context } = await openBrowser();
 
-    await runApplication(url);
+  const jobs = session.urls.map((url, index) =>
+    runApplication(context, url, index + 1)
+  );
 
-    session.currentIndex++;
+  await Promise.all(jobs);
 
-    if (session.mode === "interactive") {
-      const rl = createInterface({ input, output });
-      await rl.question("➡️ Press ENTER to continue...");
-    }
-  }
+  console.log("🟡 Autofill finished. Review forms and submit manually.");
 
-  console.log("\n✅ Session finished");
+  await new Promise(() => {});
 }

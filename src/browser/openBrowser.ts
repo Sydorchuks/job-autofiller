@@ -1,17 +1,14 @@
-import { Browser, chromium, Page } from "playwright";
-
+import { Browser, BrowserContext, chromium } from "playwright";
 
 export async function openBrowser(): Promise<{
-    browser: Browser;
-    page: Page;
+  browser: Browser;
+  context: BrowserContext;
 }> {
-    const browser = await chromium.launch({
-        headless: false,
-        slowMo: 50
-    });
+  const browser = await chromium.launch({
+    headless: false,
+    slowMo: 50,
+  });
 
-    const context = await browser.newContext();
-    const page = await context.newPage();
-
-    return { browser, page };
+  const context = await browser.newContext();
+  return { browser, context };
 }

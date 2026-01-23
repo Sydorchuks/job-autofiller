@@ -1,7 +1,6 @@
-import { createInterface } from "node:readline/promises";
-import { stdin as input, stdout as output } from "node:process";
+import { BrowserContext } from "playwright";
+import userSignal from "../input/userSignal";
 
-import { openBrowser } from "../../browser/openBrowser";
 import {
   detectAndDumpForm,
   detectSemanticForm,
@@ -17,21 +16,23 @@ import { autofillLanguages } from "../../form/languageAutofill";
 import { profile } from "../../config/profile";
 import { goToNextPageIfExists } from "./multiPage";
 
-export async function runApplication(url: string): Promise<void> {
-  const rl = createInterface({ input, output });
+export async function runApplication(
+  context: BrowserContext,
+  url: string,
+  jobId: number
+): Promise<void> {
+  const page = await context.newPage();
 
-  console.log(`\n🔗 Opening: ${url}`);
-
-  const { page } = await openBrowser();
+  console.log(`🔗 [${jobId}] Opening: ${url}`);
   await page.goto(url, { waitUntil: "domcontentloaded" });
 
-  console.log("👉 Log in manually if needed.");
-  await rl.question("Press ENTER when application form is visible...");
+  console.log(`⏸️ [${jobId}] Waiting for ENTER`);
+  await userSignal.wait();
 
   let pageIndex = 1;
 
   while (true) {
-    console.log(`\n📄 Filling page ${pageIndex}`);
+    console.log(`📄 [${jobId}] Filling page ${pageIndex}`);
 
     const { elements: rawElements } = await detectAndDumpForm(page);
     const semanticFields = await detectSemanticForm(page);
@@ -44,14 +45,10 @@ export async function runApplication(url: string): Promise<void> {
     await autofillLanguages(page, semanticFields, profile.languages);
 
     const hasNext = await goToNextPageIfExists(page);
-
-    if (!hasNext) {
-      console.log("🛑 No NEXT page detected");
-      break;
-    }
+    if (!hasNext) break;
 
     pageIndex++;
   }
 
-  console.log("🟡 Review the form manually before submit.");
+  console.log(`✅ [${jobId}] Done`);
 }
